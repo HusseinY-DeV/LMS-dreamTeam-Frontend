@@ -10,12 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import AccountBalance from '@material-ui/icons/AccountBalance'
 import { withRouter } from 'react-router-dom'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';

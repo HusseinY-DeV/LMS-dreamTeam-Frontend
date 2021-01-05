@@ -1,13 +1,13 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute'
-import Login from './Login'
-import Dashboard from './Dashboard'
-import Admins from './Admins'
-import Classes from './Classes'
-import Sections from './Sections'
-import Students from './Students'
-import Reports from './Reports'
+import Login from './components/Login/Login'
+import Dashboard from './components/Dashboard/Dashboard'
+import Admins from './components/Admin/Admins'
+import Classes from './components/Class/Classes'
+import Sections from './components/Section/Sections'
+import Students from './components/Student/Students'
+import Reports from './components/Report/Reports'
 
 const App = () => {
   return (

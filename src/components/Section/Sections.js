@@ -1,5 +1,5 @@
 import React from 'react'
-import Drawer from './Drawer'
+import Drawer from '../../Drawer'
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'

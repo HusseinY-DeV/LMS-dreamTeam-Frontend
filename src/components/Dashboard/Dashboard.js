@@ -1,5 +1,5 @@
 import React from 'react'
-import Drawer from './Drawer'
+import Drawer from '../../Drawer'
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
@@ -36,12 +36,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Reports = () => {
+const Dashboard = () => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(true);
   return (
     <div className={classes.container}>
-      <Drawer view="Reports" open={[open, setOpen]} />
+      <Drawer view="Dashboard" open={[open, setOpen]} />
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,
@@ -49,11 +49,11 @@ const Reports = () => {
       >
         <div className={classes.drawerHeader} />
         <Typography paragraph>
-          Reports goes here
+          Dashboard goes here
         </Typography>
       </main>
     </div>
   )
 }
 
-export default Reports
+export default Dashboard
