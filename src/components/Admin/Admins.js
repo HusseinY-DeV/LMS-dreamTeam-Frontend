@@ -197,8 +197,7 @@ const Admins = () => {
     setNameErrorMessage('');
     setEmailErrorMessage('');
     setPasswordErrorMessage('');
-    e.preventDefault();
-
+    e.preventDefault()
     const data = await addAdminApi(name, email, password);
     if (data.errors) {
       if (data.errors.name) {
