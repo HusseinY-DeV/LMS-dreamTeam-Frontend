@@ -68,21 +68,14 @@ const Admins = () => {
   const [rows, setRows] = React.useState([]);
 
   const [total, setTotal] = React.useState(0);
-
   const [loading, setLoading] = React.useState(null);
-
   const [addAdminModal, setAddAdminModal] = React.useState(false);
-
   const [addAdminSuccessModal, setAddAdminSuccessModal] = React.useState(false);
-
   const [updateAdminModal, setUpdateAdminModal] = React.useState(false);
-
   const [updateAdminSuccessModal, setUpdateAdminSuccessModal] = React.useState(false);
-
   const [deleteAdminModal, setDeleteAdminModal] = React.useState(false);
-
   const [deleteAdminSuccessModal, setDeleteAdminSuccessModal] = React.useState(false);
-
+  
   const [name, setName] = React.useState('');
   const [nameUpdate, setNameUpdate] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
@@ -154,7 +147,6 @@ const Admins = () => {
 
   const handleUpdateAdminModalOpen = () => {
     setUpdateAdminModal(true);
-
   };
 
   const handleUpdateAdminModalClose = () => {
@@ -346,7 +338,6 @@ const Admins = () => {
           passwordErrorMessage,
           password
         }}
-
         />
         <AddSuccessModal props={{
           addAdminSuccessModal,

@@ -7,7 +7,9 @@ import UpdateIcon from '@material-ui/icons/Update';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const Row = ({ props }) => {
-  const { row } = props;
+  const { row, setUpdatedId, setNameUpdate, handleUpdateClassModalOpen,
+  setDeletedId,setDeletedName,handleDeleteClassModalOpen , deleteClass
+  } = props;
 
   const useStyles = makeStyles(theme => ({
     button: {
@@ -33,10 +35,9 @@ const Row = ({ props }) => {
       <TableCell size="small" align="left">
         <Button
           onClick={() => {
-            // setUpdatedId(row.id);
-            // setNameUpdate(row.name);
-            // setEmailUpdate(row.email)
-            // handleUpdateAdminModalOpen();
+            setUpdatedId(row.id);
+            setNameUpdate(row.name);
+            handleUpdateClassModalOpen();
           }}
           variant="contained"
           color="default"
@@ -46,9 +47,9 @@ const Row = ({ props }) => {
                       </Button>
         <Button
           onClick={() => {
-            // setDeletedId(row.id);
-            // setDeletedName(row.name);
-            // handleDeleteAdminModalOpen();
+            setDeletedId(row.id);
+            setDeletedName(row.name);
+            handleDeleteClassModalOpen();
           }}
           variant="contained"
           color="secondary"
