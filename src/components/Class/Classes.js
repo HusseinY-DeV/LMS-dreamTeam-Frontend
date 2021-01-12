@@ -1,8 +1,20 @@
-import React from 'react'
-import Drawer from '../../Drawer'
+import React, { useState, useEffect } from 'react';
+import Drawer from '../../Drawer';
 import clsx from 'clsx';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Pagination from '@material-ui/lab/Pagination';
+import Row from './Row';
+import { getAllClassesApi } from './api/api';
+
 
 const drawerWidth = 200;
 
@@ -34,11 +46,44 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
+  button: {
+    margin: theme.spacing(1),
+  },
+  table: {
+    minWidth: 650,
+  },
 }))
 
 const Classes = () => {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(null);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [dataChange, setDataChange] = useState(true);
+  const [addClassModal, setAddClassModal] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      setLoading(true);
+      const data = await getAllClassesApi(page);
+      if (!active) {
+        return;
+      }
+      console.log(data);
+      setTotal(Math.ceil(data.total / 10));
+      setRows(data.data);
+      setLoading(false);
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [page, dataChange]);
+
+
   return (
     <div className={classes.container}>
       <Drawer view="Classes" open={[open, setOpen]} />
@@ -48,9 +93,42 @@ const Classes = () => {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Typography paragraph>
-          Classes goes here
-        </Typography>
+
+        <Button
+          style={{ marginBottom: "20px" }}
+          variant="contained"
+          color="primary"
+          size="large"
+          className={classes.button}
+          startIcon={<AddCircleIcon />}
+          onClick={() => setAddClassModal(true)}
+        >
+          Add Class
+      </Button>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                {['Name', 'Created', 'Updated'].map((cell, key) => (
+                  <TableCell key={key} size="small" align="left">{cell}</TableCell>
+                ))}
+                <TableCell size="small" align="left"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, key) =>
+                <Row key={key} props={{
+                  row
+                }} />
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <div style={{ marginTop: 45, display: 'flex', justifyContent: 'center' }}>
+          {loading && <p>Loading...</p>}
+          {rows.length > 0 && <Pagination color="primary" count={total} page={page} onChange={(e, value) => setPage(value)} />}
+
+        </div>
       </main>
     </div>
   )

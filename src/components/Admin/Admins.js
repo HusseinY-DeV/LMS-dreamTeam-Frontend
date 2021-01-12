@@ -136,6 +136,12 @@ const Admins = () => {
 
   const handleAddAdminModalClose = () => {
     setAddAdminModal(false);
+    setNameError(false);
+    setNameErrorMessage('');
+    setEmailError(false);
+    setEmailErrorMessage('');
+    setPasswordError(false);
+    setPasswordErrorMessage('');
   };
 
   const handleAddAdminSuccessModalOpen = () => {
@@ -148,10 +154,17 @@ const Admins = () => {
 
   const handleUpdateAdminModalOpen = () => {
     setUpdateAdminModal(true);
+
   };
 
   const handleUpdateAdminModalClose = () => {
     setUpdateAdminModal(false);
+    setNameError(false);
+    setNameErrorMessage('');
+    setEmailError(false);
+    setEmailErrorMessage('');
+    setPasswordError(false);
+    setPasswordErrorMessage('');
   };
 
   const handleUpdateAdminSuccessModalOpen = () => {
@@ -257,7 +270,7 @@ const Admins = () => {
   }
 
   const deleteAdmin = async () => {
-    deleteAdminApi(deletedId);
+    await deleteAdminApi(deletedId);
     setDataChange(!dataChange);
     setDeletedId(null);
     setDeletedName(null);
