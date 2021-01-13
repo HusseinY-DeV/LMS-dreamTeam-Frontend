@@ -154,8 +154,6 @@ const Classes = () => {
     setNameError(false);
     setNameErrorMessage('');
     const data = await updateClassApi(updatedId, nameUpdate);
-    console.log(data);
-    return;
     if (data.errors) {
       if (data.errors.name) {
         setNameError(true);
@@ -163,6 +161,11 @@ const Classes = () => {
       }
       return;
     }
+    handleUpdateClassModalClose();
+    handleUpdateClassSuccessModalOpen();
+    setUpdatedId(null);
+    setNameUpdate('');
+    setDataChange(!dataChange);
   }
   const handleDeleteClassModalClose = () => {
     setDeleteClassModal(false);
@@ -177,7 +180,6 @@ const Classes = () => {
 
   const deleteClass = async () => {
     const data = await deleteClassApi(deletedId);
-    console.log(data.message);
     if (data.message)
     {
       setShown(true);
@@ -202,7 +204,6 @@ const Classes = () => {
         if (!active) {
           return;
         }
-        console.log(data);
         setTotal(Math.ceil(data.total / 10));
         setRows(data.data);
         setLoading(false);
@@ -278,11 +279,14 @@ const Classes = () => {
           }} />
           <UpdateModal props={{
             updateClassModal,
+            updateClass,
             handleUpdateClassModalClose,
             nameError,
             nameUpdate,
             handleFormChangeUpdate,
             nameErrorMessage,
+            nameUpdate,
+            updatedId
           }} />
           <UpdateSuccessModal props={{
             updateClassSuccessModal,

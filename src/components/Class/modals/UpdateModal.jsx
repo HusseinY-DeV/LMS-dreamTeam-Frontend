@@ -16,9 +16,10 @@ const UpdateModal = ({ props }) => {
     updateClass,
     handleUpdateClassModalClose,
     nameError,
-    nameUpdate,
     handleFormChangeUpdate,
     nameErrorMessage,
+    updatedId,
+    nameUpdate
   } = props
 
   const useStyles = makeStyles(theme => ({
