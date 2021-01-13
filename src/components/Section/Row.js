@@ -36,7 +36,7 @@ const TableRows = ({ props }) => {
         {row.number_of_students}
       </TableCell>
       <TableCell style={{ fontSize: 12 }} size="small" align="left">
-        {row.class_id}
+        {row.class.name}
       </TableCell>
       <TableCell size="small" align="left">
         {`${created.getFullYear()}-${created.getMonth() + 1}-${created.getDate()}`}

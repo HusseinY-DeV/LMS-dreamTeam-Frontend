@@ -9,7 +9,8 @@ const DeleteSuccessModal = ({ props }) => {
 
   const {
     deleteSectionSuccessModal,
-    handleDeleteSectionSuccessModalClose
+    handleDeleteSectionSuccessModalClose,
+    status
   } = props;
 
   const useStyles = makeStyles(theme => ({
@@ -42,7 +43,10 @@ const DeleteSuccessModal = ({ props }) => {
     >
       <Fade in={deleteSectionSuccessModal}>
         <div className={classes.paper}>
-          <span style={{ marginRight: '10px' }} id="transition-modal-description">Section Deleted Successfully</span>
+          {status ? (<span style={{ marginRight: '10px' }} id="transition-modal-description">{status}</span>)
+            : 
+         (<span style={{ marginRight: '10px' }} id="transition-modal-description">Section Deleted Successfully</span>)   
+        }
           <Button onClick={() => { handleDeleteSectionSuccessModalClose() }} variant="contained" color="primary">
             Okay
                 </Button>

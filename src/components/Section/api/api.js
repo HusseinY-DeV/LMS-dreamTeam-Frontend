@@ -17,7 +17,7 @@ export const getSectionApi = async (id) => {
 }
 
 
-export const addSectionApi = async (name) => {
+export const addSectionApi = async (name,number_of_students,class_id) => {
   const response = await fetch(`http://localhost:8000/api/sections`, {
     method: 'POST',
     headers: {
@@ -25,14 +25,16 @@ export const addSectionApi = async (name) => {
       'X-Requested-With': 'XMLHttpRequest'
     },
     body: JSON.stringify({
-      name
+      name,
+      number_of_students,
+      class_id
     })
   });
   const data = await response.json();
   return data;
 }   
 
-export const updateSectionApi = async (id, name) => {
+export const updateSectionApi = async (id, name,number_of_students,class_id) => {
   
   const response = await fetch(`http://localhost:8000/api/sections/${id}`, {
     method: "PATCH",
@@ -41,11 +43,12 @@ export const updateSectionApi = async (id, name) => {
       'X-Requested-With': 'XMLHttpRequest'
     },
     body: JSON.stringify({
-      name: name,
+      name,
+      number_of_students,
+      class_id
     })
   });
   const data = await response.json();
-  console.log(await data);
   return data;
 }
 

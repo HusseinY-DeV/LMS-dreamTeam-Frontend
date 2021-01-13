@@ -12,7 +12,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { getAllSectionsNoPaginateApi } from '../../Section/api/api'
+import { getAllClassesApi } from '../../Class/api/api'
 import { addSectionApi } from '../api/api'
 import AddSuccessModal from './AddSuccessModal'
 
@@ -31,36 +31,24 @@ const AddModal = ({ props }) => {
 
   const error = { msg: '', status: false };
 
-  const [fname, setFname] = useState('');
-  const [fnameError, setFnameError] = useState(error);
+  const [name, setName] = useState('');
+  const [nameError, setNameError] = useState(error);
 
-  const [lname, setLname] = useState('');
-  const [lnameError, setLnameError] = useState(error);
+  const [numberOfStudents, setNumberOfStudents] = useState('');
+  const [numberOfStudentsError, setNumberOfStudentsError] = useState(error);
 
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(error);
-
-  const [phone, setPhone] = useState('');
-  const [phoneError, setPhoneError] = useState(error);
-
-
-  const [sectionId, setSectionId] = useState('');
-  const [sectionError, setSectionError] = useState(error);
-
-
-  const [file, setFile] = useState(null);
-  const [fileError, setFileError] = useState(error);
-
-  const [sections, setSections] = useState([]);
+  const [classId, setClassId] = useState('');
+  const [classError, setClassError] = useState(error);
+  const [clases, setClases] = useState([]);
 
   useEffect(() => {
     let active = true;
     (async () => {
-      const data = await getAllSectionsNoPaginateApi();
+      const data = await getAllClassesApi();
       if (!active) {
         return;
       }
-      setSections(data);
+      setClases(data);
     })();
 
     return () => {
@@ -89,48 +77,30 @@ const AddModal = ({ props }) => {
   const classes = useStyles();
 
   const handleFormChange = e => {
-    e.target.id === "first_name" && setFname(e.target.value);
-    e.target.id === "last_name" && setLname(e.target.value);
-    e.target.id === "email" && setEmail(e.target.value);
-    e.target.id === "phone" && setPhone(e.target.value);
+    e.target.id === "name" && setName(e.target.value);
+    e.target.id === "numb" && setNumberOfStudents(e.target.value);
   }
 
   const handleSelectChange = e => {
-    setSectionId(e.target.value);
+    setClassId(e.target.value);
   }
 
   const addSection = async e => {
-    setFnameError(error);
-    setLnameError(error);
-    setEmailError(error);
-    setPhoneError(error);
-    setSectionError(error);
-    setFileError(error);
+    setNameError(error);
+    setNumberOfStudentsError(error);
+    setClassError(error);
     e.preventDefault();
-    const data = await addSectionApi(fname, lname, email, phone, sectionId, file);
+    const data = await addSectionApi(name, numberOfStudents,classId);
     if (data.errors) {
-      if (data.errors.first_name) {
-        setFnameError({ msg: data.errors.first_name[0], status: true });
+      if (data.errors.name) {
+        setNameError({ msg: data.errors.name[0], status: true });
       }
-      if (data.errors.last_name) {
-        setLnameError({ msg: data.errors.last_name[0], status: true });
+      if (data.errors.number_of_students) {
+        setNumberOfStudentsError({ msg: data.errors.number_of_students[0], status: true });
       }
-      if (data.errors.email) {
-        setEmailError({ msg: data.errors.email[0], status: true });
+      if (data.errors.class_id) {
+        setClassError({ msg: "The class is required", status: true });
       }
-      if (data.errors.phone) {
-        setPhoneError({ msg: data.errors.phone[0], status: true });
-      }
-      if (data.errors.section_id) {
-        setSectionError({ msg: "The section is required", status: true });
-      }
-      if (data.errors.file) {
-        setFileError({ msg: data.errors.file[0], status: true });
-      }
-      return;
-    }
-    if (data.message == "Section is full") {
-      setSectionError({ msg: "Section is full", status: true });
       return;
     }
     handleAddSectionSuccessModalOpen();
@@ -157,101 +127,53 @@ const AddModal = ({ props }) => {
               Add Section Form
           </Typography>
             <form onSubmit={addSection}>
-              <FormControl style={{ display: 'block', width: '400px', marginBottom: '20px' }} error={fnameError.status}>
-                <InputLabel htmlFor="first_name">First Name</InputLabel>
+              <FormControl style={{ display: 'block', width: '400px', marginBottom: '20px' }} error={nameError.status}>
+                <InputLabel htmlFor="name">Section name</InputLabel>
                 <Input
-                  placeholder="e.g. john"
+                  placeholder="e.g. sec"
                   type="text"
                   required
                   style={{ width: '100%' }}
-                  id="first_name"
-                  value={fname}
+                  id="name"
+                  value={name}
                   onChange={handleFormChange}
                   aria-describedby="fname-text"
                 />
-                {fnameError.status && <FormHelperText id="fname-error-text">{fnameError.msg}</FormHelperText>}
+                {nameError.status && <FormHelperText id="fname-error-text">{nameError.msg}</FormHelperText>}
               </FormControl>
 
-              <FormControl style={{ display: 'block', width: '400px', marginBottom: '20px' }} error={lnameError.status}>
-                <InputLabel htmlFor="last_name">Last Name</InputLabel>
+              <FormControl style={{ display: 'block', width: '400px', marginBottom: '20px' }} error={numberOfStudentsError.status}>
+                <InputLabel htmlFor="numb">Number of Students</InputLabel>
                 <Input
                   placeholder="e.g. doe"
                   type="text"
                   required
                   style={{ width: '100%' }}
-                  id="last_name"
-                  value={lname}
+                  id="numb"
+                  value={numberOfStudents}
                   onChange={handleFormChange}
                   aria-describedby="lname-text"
                 />
-                {lnameError.status && <FormHelperText id="lname-error-text">{lnameError.msg}</FormHelperText>}
+                {numberOfStudentsError.status && <FormHelperText id="lname-error-text">{numberOfStudentsError.msg}</FormHelperText>}
               </FormControl>
 
-              <FormControl style={{ display: 'block', width: '400px', marginBottom: '20px' }} error={emailError.status}>
-                <InputLabel htmlFor="email">Email</InputLabel>
-                <Input
-                  placeholder="e.g. johndoe@email.com"
-                  type="email"
-                  required
-                  style={{ width: '100%' }}
-                  id="email"
-                  value={email}
-                  onChange={handleFormChange}
-                  aria-describedby="email-text"
-                />
-                {emailError.status && <FormHelperText id="email-error-text">{emailError.msg}</FormHelperText>}
-              </FormControl>
-
-              <FormControl style={{ display: 'block', width: '400px', marginBottom: '20px' }} error={phoneError.status}>
-                <InputLabel htmlFor="phone">Phone</InputLabel>
-                <Input
-                  placeholder="e.g. 71 479 407"
-                  type="text"
-                  required
-                  style={{ width: '100%' }}
-                  id="phone"
-                  value={phone}
-                  onChange={handleFormChange}
-                  aria-describedby="phone-text"
-                />
-                {phoneError.status && <FormHelperText id="phone-error-text">{phoneError.msg}</FormHelperText>}
-              </FormControl>
-
-              <FormControl className={classes.select} error={sectionError.status}>
-                <InputLabel id="demo-simple-select-label">Section</InputLabel>
+              <FormControl className={classes.select} error={classError.status}
+              >
+                <InputLabel id="demo-simple-select-label">Class</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="section"
-                  value={sectionId}
+                  value={classId}
                   onChange={handleSelectChange}
                 >
-                  {sections.map((section, key) => (
-                    <MenuItem key={key} value={section.id}>{section.name}</MenuItem>
+                  {clases.map((clas, key) => (
+                    <MenuItem key={key} value={clas.id}>{clas.name}</MenuItem>
                   ))}
                 </Select>
-                {sectionError.status && <FormHelperText id="section-error-text">{sectionError.msg}</FormHelperText>}
+                {classError.status && <FormHelperText id="section-error-text">{classError.msg}</FormHelperText>}
               </FormControl>
-
-              <FormControl style={{ display: 'block', width: '400px', marginBottom: '20px' }} error={fileError.status}>
-                <Input type="file" id="fileId" style={{ display: 'none' }}
-                  onChange={(e) => {
-                    setFile(e.currentTarget.files[0])
-                    console.log(e.currentTarget.files[0].name);
-                  }
-                  }
-                />
-                {file && <span style={{ marginRight: 10 }}>{file.name}</span>}
-                <Button
-                  variant="contained"
-                  color="default"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<CloudUploadIcon />}
-                  onClick={() => document.getElementById('fileId').click()}
-                >Upload Image</Button>
-                {fileError.status && <FormHelperText id="file-error-text">{fileError.msg}</FormHelperText>}
-              </FormControl>
-              <Button type="submit" variant="contained" color="primary">
+              <Button type="submit" variant="contained" color="primary"
+              style={{ display: 'block' }}>
                 Add Section
             </Button>
             </form>

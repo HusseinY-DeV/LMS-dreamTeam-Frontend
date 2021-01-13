@@ -10,7 +10,7 @@ import DeleteSuccessModal from './DeleteSuccessModal'
 const DeleteModal = ({ props }) => {
 
   const [deleteSectionSuccessModal, setDeleteSectionSuccessModal] = useState(false);
-
+  const [status, setStatus] = useState('');
   const handleDeleteSectionSuccessModalOpen = () => {
     setDeleteSectionSuccessModal(true);
   };
@@ -24,8 +24,7 @@ const DeleteModal = ({ props }) => {
     deleteSectionModal,
     handleDeleteSectionModalClose,
     deletedId,
-    deletedFname,
-    deletedLname,
+    deletedName,
     setDataChange,
     length,
     setPage
@@ -49,7 +48,11 @@ const DeleteModal = ({ props }) => {
   const classes = useStyles();
 
   const deleteSection = async () => {
-    await deleteSectionApi(deletedId);
+    const data = await deleteSectionApi(deletedId);
+    console.log(data);
+    if (data.message) {
+      setStatus(data.message);
+    }
     if (length == 1) {
       setPage(prev => --prev)
       handleDeleteSectionSuccessModalOpen();
@@ -75,7 +78,7 @@ const DeleteModal = ({ props }) => {
       >
         <Fade in={deleteSectionModal}>
           <div className={classes.paper}>
-            <span style={{ marginRight: '10px' }} id="transition-modal-description">Are you sure you want to delete Section <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>{deletedFname} {deletedLname}</span></span>
+            <span style={{ marginRight: '10px' }} id="transition-modal-description">Are you sure you want to delete Section <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>{deletedName} </span></span>
             <Button style={{ marginRight: '10px' }} onClick={deleteSection} variant="contained" color="secondary">
               Yes
                 </Button>
@@ -87,7 +90,8 @@ const DeleteModal = ({ props }) => {
       </Modal>
       {deleteSectionSuccessModal && <DeleteSuccessModal props={{
         deleteSectionSuccessModal,
-        handleDeleteSectionSuccessModalClose
+        handleDeleteSectionSuccessModalClose,
+        status
       }} />}
     </>
   )
