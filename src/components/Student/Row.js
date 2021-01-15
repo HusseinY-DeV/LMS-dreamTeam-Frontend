@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TableCell from '@material-ui/core/TableCell';
@@ -26,8 +26,8 @@ const TableRows = ({ props }) => {
   }))
   const classes = useStyles()
 
-  const created = new Date(row.created_at);
-  const updated = new Date(row.updated_at);
+  // const created = new Date(row.created_at);
+  // const updated = new Date(row.updated_at);
   return (
     <TableRow key={row.id}>
       <TableCell style={{ fontSize: 12 }} size="small" align="left">

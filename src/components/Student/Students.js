@@ -74,8 +74,6 @@ const Students = () => {
 
   const [updateStudentModal, setUpdateStudentModal] = useState(false);
 
-  const [updateStudentSuccessModal, setUpdateStudentSuccessModal] = useState(false);
-
   const [deleteStudentModal, setDeleteStudentModal] = useState(false);
 
   const [deletedId, setDeletedId] = React.useState(null);
@@ -106,7 +104,6 @@ const Students = () => {
   const handlePageChange = (event, value) => {
     setPage(value);
   };
-
   const handleAddStudentModalOpen = () => {
     setAddStudentModal(true);
   }

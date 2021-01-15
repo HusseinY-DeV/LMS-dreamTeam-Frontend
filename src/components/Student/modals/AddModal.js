@@ -129,7 +129,7 @@ const AddModal = ({ props }) => {
       }
       return;
     }
-    if (data.message == "Section is full") {
+    if (data.message === "Section is full") {
       setSectionError({ msg: "Section is full", status: true });
       return;
     }

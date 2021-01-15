@@ -50,7 +50,7 @@ const DeleteModal = ({ props }) => {
 
   const deleteStudent = async () => {
     await deleteStudentApi(deletedId);
-    if (length == 1) {
+    if (length === 1) {
       setPage(prev => --prev)
       handleDeleteStudentSuccessModalOpen();
       return;

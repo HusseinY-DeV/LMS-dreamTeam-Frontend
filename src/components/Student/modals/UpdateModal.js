@@ -110,7 +110,7 @@ const UpdateModal = ({ props }) => {
     return () => {
       active = false;
     };
-  }, []);
+  }, [updateId]);
 
   const handleFormChange = e => {
     e.target.id === "first_name" && setFname(e.target.value);
@@ -153,7 +153,7 @@ const UpdateModal = ({ props }) => {
       }
       return;
     }
-    if (data.message == "Section is full") {
+    if (data.message === "Section is full") {
       setSectionError({ msg: "Section is full", status: true });
       return;
     }
