@@ -10,6 +10,12 @@ export const getStudentApi = async id => {
   return data;
 }
 
+export const searchStudentsApi = async search => {
+  const response = await fetch(`http://localhost:8000/api/students?student=${search}`);
+  const data = await response.json();
+  return data;
+}
+
 export const addStudentApi = async (first_name, last_name, email, phone, section_id, file) => {
   const formData = new FormData();
   formData.append("first_name", first_name);

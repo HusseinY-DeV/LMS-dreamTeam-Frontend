@@ -12,11 +12,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import Pagination from '@material-ui/lab/Pagination';
 import Row from './Row';
-import { getAllStudentsApi } from './api/api'
+import { getAllStudentsApi , searchStudentsApi } from './api/api'
 import AddModal from './modals/AddModal'
 import DeleteModal from './modals/DeleteModal'
 import UpdateModal from './modals/UpdateModal'
 import { makeStyles } from '@material-ui/core/styles'
+import Search from './Search';
 
 const drawerWidth = 200;
 
@@ -83,19 +84,28 @@ const Students = () => {
   const [deletedLname, setDeletedLname] = React.useState(null);
 
   const [updateId, setUpdateId] = useState(null);
+  const [search, setSearch] = useState('');
+
 
   useEffect(() => {
     let active = true;
     (async () => {
       setLoading(true);
-      const data = await getAllStudentsApi(page);
+      if (search)
+      {
+        const data = await searchStudentsApi(search);
+        setRows(data.data);
+        setLoading(false);
+      } else {
+        const data = await getAllStudentsApi(page);
+        setTotal(Math.ceil(data.total / 10));
+        setRows(data.data);
+        setLoading(false);
+      }
       if (!active) {
         return;
       }
 
-      setTotal(Math.ceil(data.total / 10));
-      setRows(data.data);
-      setLoading(false);
     })();
 
     return () => {
@@ -192,6 +202,9 @@ const Students = () => {
           updateId,
           setDataChange
         }} />}
+          <Search search={search} setSearch={setSearch} setDataChange={setDataChange}
+        dataChange={dataChange}
+          />
         {deleteStudentModal && <DeleteModal props={{
           deleteStudentModal,
           handleDeleteStudentModalClose,
