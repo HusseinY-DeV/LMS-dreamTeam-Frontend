@@ -18,8 +18,9 @@ import UpdateModal from './modals/UpdateModal'
 import UpdateSuccessModal from './modals/UpdateSuccessModal'
 import DeleteModal from './modals/DeleteModal'
 import DeleteSuccessModal from './modals/DeleteSuccessModal'
-import { getAllAdminsApi, addAdminApi, updateAdminApi, deleteAdminApi } from './api/api'
+import { getAllAdminsApi, addAdminApi, updateAdminApi, deleteAdminApi , searchAdminsApi } from './api/api'
 import Row from './Row';
+import Search from './Search';
 
 const drawerWidth = 200;
 
@@ -64,7 +65,7 @@ const Admins = () => {
   const [open, setOpen] = React.useState(true);
 
   const [page, setPage] = React.useState(1);
-
+  const [search, setSearch] = React.useState('');
   const [rows, setRows] = React.useState([]);
 
   const [total, setTotal] = React.useState(0);
@@ -102,14 +103,19 @@ const Admins = () => {
     let active = true;
     (async () => {
       setLoading(true);
-      const data = await getAllAdminsApi(page);
+      if (search) {
+        const data = await searchAdminsApi(search);
+        setRows([...data]);
+        setLoading(false);
+      } else {
+        const data = await getAllAdminsApi(page);
+        setTotal(Math.ceil(data.total / 10));
+        setRows(data.data);
+        setLoading(false);
+      }
       if (!active) {
         return;
       }
-
-      setTotal(Math.ceil(data.total / 10));
-      setRows(data.data);
-      setLoading(false);
     })();
 
     return () => {
@@ -343,6 +349,9 @@ const Admins = () => {
           addAdminSuccessModal,
           handleAddAdminSuccessModalClose,
         }} />
+         <Search search={search} setSearch={setSearch} setDataChange={setDataChange}
+        dataChange={dataChange}
+          />
         <UpdateModal props={{
           updateAdminModal,
           handleUpdateAdminModalClose,

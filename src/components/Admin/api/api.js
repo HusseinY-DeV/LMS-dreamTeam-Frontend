@@ -4,6 +4,12 @@ export const getAllAdminsApi = async page => {
   return data;
 }
 
+export const searchAdminsApi = async search => {
+  const response = await fetch(`http://localhost:8000/api/admins?adminname=${search}`);
+  const data = await response.json();
+  return data;
+}
+
 export const addAdminApi = async (name, email, password) => {
   const response = await fetch(`http://localhost:8000/api/admins/register`, {
     method: "POST",
