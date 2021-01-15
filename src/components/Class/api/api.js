@@ -10,6 +10,12 @@ export const getAllClassesApi = async () => {
   return data;
 }
 
+export const searchClassesApi = async (search) => {
+  const response = await fetch(`http://localhost:8000/api/classes?classname=${search}`);
+  const data = await response.json();
+  return data;
+}
+
 export const addClassApi = async (name) => {
   const response = await fetch(`http://localhost:8000/api/classes`, {
     method: 'POST',

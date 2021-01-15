@@ -13,13 +13,14 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Pagination from '@material-ui/lab/Pagination';
 import Row from './Row';
-import { getAllClassesPagApi , addClassApi , updateClassApi ,deleteClassApi } from './api/api';
+import { getAllClassesPagApi , addClassApi , updateClassApi ,deleteClassApi , searchClassesApi } from './api/api';
 import AddModal from './modals/AddModal'
 import UpdateModal from './modals/UpdateModal'
 import UpdateSuccessModal from './modals/UpdateSuccessModal'
 import DeleteModal from './modals/DeleteModal'
 import DeleteSuccessModal from './modals/DeleteSuccessModal'
 import AddSuccessModal from './modals/AddSuccessModal'
+import Search from './Search';
 
 const drawerWidth = 200;
 
@@ -61,6 +62,8 @@ const useStyles = makeStyles(theme => ({
 
 const Classes = () => {
   const classes = useStyles()
+  const [search, setSearch] = useState('');
+  const [searchData, setSearchData] = useState([]); 
   const [open, setOpen] = useState(true);
   const [status, setStatus] = useState('');
   const [shown, setShown] = useState(false);
@@ -85,7 +88,7 @@ const Classes = () => {
   
 
    
-
+  
   const handleAddClassModalClose = () => {
     setAddClassModal(false);
     setNameError(false);
@@ -200,13 +203,20 @@ const Classes = () => {
       let active = true;
       (async () => {
         setLoading(true);
-        const data = await getAllClassesPagApi(page);
-        if (!active) {
-          return;
+        if (search) {
+          const data = await searchClassesApi(search);
+          setRows([...data]);
+          setLoading(false);
+        } else {
+          const data = await getAllClassesPagApi(page);
+          if (!active) {
+            return;
+          }
+          setTotal(Math.ceil(data.total / 10));
+          setRows(data.data);
+          setLoading(false);
         }
-        setTotal(Math.ceil(data.total / 10));
-        setRows(data.data);
-        setLoading(false);
+      
       })();
 
       return () => {
@@ -258,8 +268,7 @@ const Classes = () => {
                     setDeletedId,
                     setDeletedName,
                     handleDeleteClassModalOpen,
-                  }} />
-                )}
+                  }} />)} 
               </TableBody>
             </Table>
           </TableContainer>
@@ -297,7 +306,10 @@ const Classes = () => {
           handleDeleteClassModalClose,
           deletedName,
           deleteClass
-        }} />
+          }} />
+          <Search search={search} setSearch={setSearch} setDataChange={setDataChange}
+        dataChange={dataChange}
+          />
         <DeleteSuccessModal props={{
           deleteClassSuccessModal,
             handleDeleteClassSuccessModalClose,
