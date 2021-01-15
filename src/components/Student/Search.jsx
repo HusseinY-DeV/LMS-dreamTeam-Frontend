@@ -17,7 +17,7 @@ const Search = (props) => {
     }
     return ( 
         <div className="search" style={divStyles}>
-            <input style={inputStyles} type="search" placeholder="Search by class name"
+            <input style={inputStyles} type="search" placeholder="Search by first name"
                 value={props.search}
                 onChange={e => {
                     props.setSearch(e.target.value);
