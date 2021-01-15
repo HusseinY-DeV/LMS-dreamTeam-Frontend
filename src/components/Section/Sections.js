@@ -12,11 +12,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import Pagination from '@material-ui/lab/Pagination';
 import Row from './Row';
-import { getAllSectionsPagApi } from './api/api'
+import { getAllSectionsPagApi , searchSectionsApi } from './api/api'
 import AddModal from './modals/AddModal'
 import DeleteModal from './modals/DeleteModal'
 import UpdateModal from './modals/UpdateModal'
 import { makeStyles } from '@material-ui/core/styles'
+import Search from './Search';
 
 const drawerWidth = 200;
 
@@ -59,7 +60,7 @@ const useStyles = makeStyles(theme => ({
 const Sections = () => {
   const classes = useStyles()
   const [open, setOpen] = useState(true);
-
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
   const [rows, setRows] = useState([]);
@@ -87,16 +88,20 @@ const Sections = () => {
     let active = true;
     (async () => {
       setLoading(true);
-      const data = await getAllSectionsPagApi(page);
+      if (search) {
+        const data = await searchSectionsApi(search);
+        setRows([...data]);
+        setLoading(false);
+      } else {
+        const data = await getAllSectionsPagApi(page);
+        setTotal(Math.ceil(data.total / 10));
+        setRows(data.data);
+        setLoading(false);
+      }
       if (!active) {
         return;
       }
-
-      setTotal(Math.ceil(data.total / 10));
-      setRows(data.data);
-      setLoading(false);
     })();
-
     return () => {
       active = false;
     };
@@ -184,6 +189,9 @@ const Sections = () => {
           handleAddSectionModalClose,
           setDataChange
         }} />}
+           <Search search={search} setSearch={setSearch} setDataChange={setDataChange}
+        dataChange={dataChange}
+          />
         {updateSectionModal && <UpdateModal props={{
           updateSectionModal,
           handleUpdateSectionModalClose,

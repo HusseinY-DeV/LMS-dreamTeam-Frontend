@@ -10,6 +10,12 @@ export const getAllSectionsPagApi = async (page) => {
   return data;
 }
 
+export const searchSectionsApi = async (search) => {
+  const response = await fetch(`http://localhost:8000/api/sections?sectionname=${search}`);
+  const data = await response.json();
+  return data;
+}
+
 export const getSectionApi = async (id) => {
   const response = await fetch(`http://localhost:8000/api/sections/${id}`);
   const data = await response.json();

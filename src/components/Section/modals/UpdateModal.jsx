@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Avatar from '@material-ui/core/Avatar';
-import { getAllSectionsNoPaginateApi } from '../../Section/api/api'
+import { getAllClassesApi } from '../../Class/api/api'
 import { getSectionApi, updateSectionApi } from '../api/api'
 import UpdateSuccessModal from './UpdateSuccessModal'
 import { makeStyles } from '@material-ui/core/styles';
@@ -81,7 +81,7 @@ const UpdateModal = ({ props }) => {
   useEffect(() => {
     let active = true;
     (async () => {
-      const data = await getAllSectionsNoPaginateApi();
+      const data = await getAllClassesApi();
       const data2 = await getSectionApi(updateId);
       if (!active) {
         return;

@@ -63,7 +63,6 @@ const useStyles = makeStyles(theme => ({
 const Classes = () => {
   const classes = useStyles()
   const [search, setSearch] = useState('');
-  const [searchData, setSearchData] = useState([]); 
   const [open, setOpen] = useState(true);
   const [status, setStatus] = useState('');
   const [shown, setShown] = useState(false);
