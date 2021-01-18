@@ -2,10 +2,10 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 
 const ProtectedRoute = props => {
-  const isAuthentcated = true;
+  const isAuthenticated = localStorage.getItem('token');
 
   return (
-    isAuthentcated ?
+    isAuthenticated ?
       <props.render /> :
       <Redirect to={{ pathname: '/login' }} />
   )

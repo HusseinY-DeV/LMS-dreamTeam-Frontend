@@ -72,6 +72,10 @@ const Drawer = props => {
   const theme = useTheme();
   const [open, setOpen] = props.open
   const view = props.view
+  const logoutAdmin = () => {
+    localStorage.removeItem('token')
+    history.push ('/login')
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -164,7 +168,8 @@ const Drawer = props => {
         </List>
         <Divider />
         <List>
-          <ListItem button key={'Logout'}>
+          <ListItem button key={'Logout'}
+            onClick={logoutAdmin}>
             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
             <ListItemText primary={'Logout'} />
           </ListItem>
