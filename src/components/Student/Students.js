@@ -22,10 +22,12 @@ const drawerWidth = 200;
 
 const useStyles = makeStyles(theme => ({
   container: {
-    display: 'flex'
+    display: 'flex',
+    height: '100%',
   },
   content: {
     flexGrow: 1,
+    height: '100%',
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
@@ -47,16 +49,18 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
+    height: '100%'
   },
   button: {
     margin: theme.spacing(1),
   },
   table: {
     minWidth: 650,
-  },
+  }
 }))
 
 const Students = () => {
+  // 27 13
   const classes = useStyles()
   const [open, setOpen] = useState(true);
 
@@ -84,6 +88,7 @@ const Students = () => {
 
   useEffect(() => {
     let active = true;
+    console.log('hi students');
     (async () => {
       setLoading(true);
       const data = await getAllStudentsApi(page);
@@ -97,6 +102,7 @@ const Students = () => {
     })();
 
     return () => {
+      console.log('bye students');
       active = false;
     };
   }, [page, dataChange]);
@@ -148,14 +154,14 @@ const Students = () => {
         >
           Add Student
         </Button>
-        <TableContainer component={Paper}>
+        <TableContainer style={{ height: '100%' }} component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
-              <TableRow>
+              <TableRow className={classes.tr}>
                 {['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Section', 'Class'].map((cell, key) => (
-                  <TableCell style={{ fontSize: 12 }} key={key} size="small" align="left">{cell}</TableCell>
+                  <TableCell className={classes.td} style={{ fontSize: 12 }} key={key} size="small" align="left">{cell}</TableCell>
                 ))}
-                <TableCell size="small" align="left"></TableCell>
+                <TableCell className={classes.td} size="small" align="left"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
-    }),
+    })
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -64,9 +64,11 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'center',
   },
+
 }))
 
 const Drawer = props => {
+
   const { history } = props
   const classes = useStyles()
   const theme = useTheme();
@@ -76,6 +78,11 @@ const Drawer = props => {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
+  const logoutAdmin = () => {
+    localStorage.removeItem('token');
+    history.push('/login')
+  }
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -149,14 +156,14 @@ const Drawer = props => {
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <MenuIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'ltr' ? <MenuIcon className={classes.listItemIcon} /> : <ChevronRightIcon />}
           </IconButton>
         </div>
         <List>
           {listItems.map(({ text, icon, onClick }, key) => {
             return (
-              <ListItem button key={key} onClick={onClick}>
-                <ListItemIcon>{icon}</ListItemIcon>
+              <ListItem className={classes.listItem} button key={key} onClick={onClick}>
+                <ListItemIcon className={classes.listItemIcon}>{icon}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             )
@@ -164,8 +171,8 @@ const Drawer = props => {
         </List>
         <Divider />
         <List>
-          <ListItem button key={'Logout'}>
-            <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+          <ListItem onClick={logoutAdmin} className={classes.listItem} button key={'Logout'}>
+            <ListItemIcon className={classes.listItemIcon}><ExitToAppIcon /></ListItemIcon>
             <ListItemText primary={'Logout'} />
           </ListItem>
         </List>

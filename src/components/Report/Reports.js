@@ -12,9 +12,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, } from '@material-ui/pickers'
-import { getAllSectionsNoPaginateApi } from '../Section/api/api';
-import { allSectionsReportApi, oneSectionsReportApi } from './api/api';
+import { MuiPickersUtilsProvider, KeyboardDatePicker, } from '@material-ui/pickers'
+import { getAllSectionsNoPaginateApi, getAllStudentsFromSection } from '../Section/api/api';
+import { allSectionsReportApi, oneSectionsReportApi, oneStudentReportApi } from './api/api';
 
 
 const drawerWidth = 200;
@@ -67,13 +67,16 @@ const Reports = () => {
 
   const [sections, setSections] = useState([]);
 
+  const [studentId, setStudentId] = useState('');
+
+  const [students, setStudents] = useState([]);
+
   const [showReport, setShowReport] = useState(false);
 
   const [selectedFromDate, setSelectedFromDate] = useState(null);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
   const [selectedToDate, setSelectedToDate] = useState(null);
-
 
   const generateSections = async () => {
     const data = await getAllSectionsNoPaginateApi();
@@ -108,6 +111,43 @@ const Reports = () => {
       }]
     });
     setShowReport(true);
+  }
+
+  const handleSectionChange = async e => {
+    setSectionId(e.target.value);
+    const data = await getAllStudentsFromSection(e.target.value);
+    setStudents(data);
+  }
+
+  const handleStudentChange = async e => {
+    setStudentId(e.target.value);
+    setShowReport(true);
+    const data = await oneStudentReportApi(e.target.value, from, to);
+    const stats = [
+      data[0].Absent,
+      data[0].Late,
+      data[0].Present,
+    ]
+    setData({
+      labels: [
+        'Absent',
+        'Late',
+        'Present'
+      ],
+      datasets: [{
+        data: stats,
+        backgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56'
+        ],
+        hoverBackgroundColor: [
+          '#FF63A9',
+          '#36A2FF',
+          '#FFCE6F'
+        ]
+      }]
+    });
   }
 
   const handleSelectChange = async e => {
@@ -153,6 +193,35 @@ const Reports = () => {
     }
     setFrom(`${date1.getFullYear()}-${month}-${day}`);
     let fromDate = `${date1.getFullYear()}-${month}-${day}`;
+    if (studentId && to) {
+      const data = await oneStudentReportApi(studentId, fromDate, to);
+      const stats = [
+        data[0].Absent,
+        data[0].Late,
+        data[0].Present,
+      ]
+      setData({
+        labels: [
+          'Absent',
+          'Late',
+          'Present'
+        ],
+        datasets: [{
+          data: stats,
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56'
+          ],
+          hoverBackgroundColor: [
+            '#FF63A9',
+            '#36A2FF',
+            '#FFCE6F'
+          ]
+        }]
+      });
+      return;
+    }
     if (sectionId && to) {
       const data = await oneSectionsReportApi(sectionId, fromDate, to);
       const stats = [
@@ -197,6 +266,35 @@ const Reports = () => {
     }
     setTo(`${date2.getFullYear()}-${month}-${day}`);
     let toDate = `${date2.getFullYear()}-${month}-${day}`;
+    if (studentId && from) {
+      const data = await oneStudentReportApi(studentId, from, toDate);
+      const stats = [
+        data[0].Absent,
+        data[0].Late,
+        data[0].Present,
+      ]
+      setData({
+        labels: [
+          'Absent',
+          'Late',
+          'Present'
+        ],
+        datasets: [{
+          data: stats,
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56'
+          ],
+          hoverBackgroundColor: [
+            '#FF63A9',
+            '#36A2FF',
+            '#FFCE6F'
+          ]
+        }]
+      });
+      return
+    }
     if (sectionId && from) {
       const data = await oneSectionsReportApi(sectionId, from, toDate);
       const stats = [
@@ -245,9 +343,15 @@ const Reports = () => {
             className={classes.button}
             startIcon={<AssessmentIcon />}
             onClick={() => {
-              setShowReport(false);
               setSectionId(null);
+              setStudentId(null);
+              setSelectedFromDate(null);
+              setSelectedToDate(null);
+              setFrom(null)
+              setTo(null)
+              setShowReport(false);
               setReportChoice("sections");
+              setStudents([])
               generateReport();
             }}
           >
@@ -262,8 +366,15 @@ const Reports = () => {
             className={classes.button}
             startIcon={<AssessmentIcon />}
             onClick={() => {
+              setSectionId(null);
+              setStudentId(null);
+              setSelectedFromDate(null);
+              setSelectedToDate(null);
+              setFrom(null)
+              setTo(null)
               setReportChoice("section");
               setShowReport(false);
+              setStudents([])
               generateSections();
             }}
           >
@@ -278,9 +389,15 @@ const Reports = () => {
             className={classes.button}
             startIcon={<AssessmentIcon />}
             onClick={() => {
+              setSectionId(null);
+              setStudentId(null);
+              setFrom(null)
+              setTo(null)
+              setSelectedFromDate(null);
+              setSelectedToDate(null);
               setShowReport(false);
               setReportChoice("student");
-              setSectionId(null);
+              generateSections();
             }}
           >
             For a Student
@@ -352,9 +469,77 @@ const Reports = () => {
               </div>
             )}
           </div>)}
-        {reportChoice && reportChoice === "student" && (
-          <p>Student</p>
-        )}
+        {reportChoice && reportChoice === "student" && (<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <FormControl className={classes.select}>
+              <InputLabel id="demo-simple-select-label">Section</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="section"
+                value={sectionId}
+                onChange={handleSectionChange}
+              >
+                {sections.map((section, key) => (
+                  <MenuItem key={key} value={section.id}>{section.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.select}>
+              <InputLabel id="demo-simple-select-label">Student</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="student"
+                value={studentId}
+                onChange={handleStudentChange}
+              >
+                {students.map((student, key) => (
+                  <MenuItem key={key} value={student.id}>{student.student_id}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                maxDate={selectedToDate}
+                minDateMessage="From date should be before to date"
+                label="From"
+                style={{ marginRight: 20 }}
+                value={selectedFromDate}
+                onChange={handleDateFromChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
+
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline2"
+                minDate={selectedFromDate}
+                minDateMessage="To date should be after from date"
+                label="To"
+                value={selectedToDate}
+                onChange={handleDateToChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          </div>
+          {showReport && (
+            <div style={{ display: 'flex', width: 600, justifyContent: 'center' }}>
+              <Pie data={data} />
+            </div>
+          )}
+        </div>)}
       </main>
     </div>
   )

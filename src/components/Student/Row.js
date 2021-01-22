@@ -23,41 +23,48 @@ const TableRows = ({ props }) => {
     button: {
       margin: theme.spacing(1),
     },
+    buttonUpdate: {
+      margin: theme.spacing(1),
+    },
+    width: 100,
+    buttonDelete: {
+      margin: theme.spacing(1),
+    },
   }))
   const classes = useStyles()
 
   // const created = new Date(row.created_at);
   // const updated = new Date(row.updated_at);
   return (
-    <TableRow key={row.id}>
-      <TableCell style={{ fontSize: 12 }} size="small" align="left">
+    <TableRow className={classes.tr} key={row.id}>
+      <TableCell className={classes.td} style={{ fontSize: 12 }} size="small" align="left">
         {row.student_id}
       </TableCell>
-      <TableCell style={{ fontSize: 12 }} size="small" align="left">
+      <TableCell className={classes.td} style={{ fontSize: 12 }} size="small" align="left">
         {row.first_name}
       </TableCell>
-      <TableCell style={{ fontSize: 12 }} size="small" align="left">
+      <TableCell className={classes.td} style={{ fontSize: 12 }} size="small" align="left">
         {row.last_name}
       </TableCell>
-      <TableCell style={{ fontSize: 12 }} size="small" align="left">
+      <TableCell className={classes.td} style={{ fontSize: 12 }} size="small" align="left">
         {row.email}
       </TableCell>
-      <TableCell style={{ fontSize: 12 }} size="small" align="left">
+      <TableCell className={classes.td} style={{ fontSize: 12 }} size="small" align="left">
         {row.phone}
       </TableCell>
-      <TableCell style={{ fontSize: 12 }} size="small" align="left">
+      <TableCell className={classes.td} style={{ fontSize: 12 }} size="small" align="left">
         {row.section.name}
       </TableCell>
-      <TableCell style={{ fontSize: 12 }} size="small" align="left">
+      <TableCell className={classes.td} style={{ fontSize: 12 }} size="small" align="left">
         {row.section.class.name}
       </TableCell>
-      {/* <TableCell size="small" align="left">
+      {/* <TableCell className={classes.td} size="small" align="left">
         {`${created.getFullYear()}-${created.getMonth() + 1}-${created.getDate()}`}
       </TableCell>
-      <TableCell size="small" align="left">
+      <TableCell className={classes.td} size="small" align="left">
         {row.created_at === row.updated_at ? 'never' : `${updated.getFullYear()}-${updated.getMonth() + 1}-${updated.getDate()}`}
       </TableCell> */}
-      <TableCell size="small" align="left">
+      <TableCell className={classes.td} size="small" align="left">
         <Button
           onClick={() => {
             setUpdateId(row.id);
@@ -65,7 +72,7 @@ const TableRows = ({ props }) => {
           }}
           variant="contained"
           color="default"
-          className={classes.button}
+          className={classes.buttonUpdate}
           startIcon={<UpdateIcon />}>
           Update
                       </Button>
@@ -76,10 +83,10 @@ const TableRows = ({ props }) => {
             setDeletedLname(row.last_name);
             handleDeleteStudentModalOpen();
           }}
-          variant="contained"
           color="secondary"
+          variant="contained"
           startIcon={<DeleteIcon />}
-          className={classes.button}
+          className={classes.buttonDelete}
         >
           Delete
                       </Button>
