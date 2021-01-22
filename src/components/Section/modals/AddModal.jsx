@@ -165,6 +165,7 @@ const AddModal = ({ props }) => {
                   id="section"
                   value={classId}
                   onChange={handleSelectChange}
+                  required
                 >
                   {clases.map((clas, key) => (
                     <MenuItem key={key} value={clas.id}>{clas.name}</MenuItem>
