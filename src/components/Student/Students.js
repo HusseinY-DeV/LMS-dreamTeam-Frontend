@@ -114,6 +114,7 @@ const Students = () => {
   }, [page, dataChange]);
 
   const handlePageChange = (event, value) => {
+    setSearch('');
     setPage(value);
   };
 

@@ -126,6 +126,7 @@ const Admins = () => {
   const classes = useStyles()
 
   const handelePageChange = (event, value) => {
+    setSearch('');
     setPage(value);
   };
 

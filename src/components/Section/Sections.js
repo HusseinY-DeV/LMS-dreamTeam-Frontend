@@ -108,6 +108,7 @@ const Sections = () => {
   }, [page, dataChange]);
 
   const handlePageChange = (event, value) => {
+    setSearch('');
     setPage(value);
   };
 
