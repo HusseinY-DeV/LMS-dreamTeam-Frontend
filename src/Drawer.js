@@ -83,11 +83,6 @@ const Drawer = props => {
 
   const listItems = [
     {
-      text: 'Dashboard',
-      icon: <DashboardIcon />,
-      onClick: () => history.push('/dashboard'),
-    },
-    {
       text: 'Admins',
       icon: <SupervisorAccountIcon />,
       onClick: () => history.push('/admins')
